@@ -106,12 +106,16 @@ console.log('-'.repeat(40));
 console.log(
   `11 - додай для знайденого елемента data-topic="navigation" атрибут style і зроби його backgroundColor жовтим`
 );
-elDataTopicNavigation.setAttribute('style', 'background-color: yellow;');
+// Варіант 1
+// elDataTopicNavigation.setAttribute('style', 'background-color: yellow;');
 console.log('-'.repeat(40));
+// Варіант 2
+elDataTopicNavigation.style.backgroundColor = 'yellow';
 
 console.log(
   `12 - у елемента data-topic="navigation" знайди елемент р і зміни його текст на "Я змінив тут текст!"`
 );
+
 elDataTopicNavigation.querySelector('p').textContent = 'Я змінив тут текст!';
 console.log('-'.repeat(40));
 
@@ -126,7 +130,10 @@ console.log('-'.repeat(40));
 console.log(
   `14 - додай до знайденого елемента атрибут style і зроби його backgroundColor блакитним`
 );
-elCurrentTopic.setAttribute('style', 'background-color: blue;');
+// Варіант 1
+// elCurrentTopic.setAttribute('style', 'background-color: blue;');
+// Варіант 2
+elCurrentTopic.style.backgroundColor = 'blue';
 console.log('-'.repeat(40));
 
 console.log(
@@ -141,15 +148,18 @@ console.log(
 );
 // Поиск элемента li
 
-// --- Вариант : Поиск непосредственного родителя
+// --- Вариант 1 : Поиск непосредственного родителя
 // parentElement
 // Назначение: Возвращает непосредственно родительский элемент.
-const elLiCompleted = elTitleCompleted.parentElement;
 
-// --- Вариант : Поиск вверх по иерархии до первого нахождения элемента
+const elLiCompleted = elTitleCompleted.parentElement;
+// або :
+// const elLiCompleted = elTitleCompleted.parentNode;
+
+// --- Вариант 2 : Поиск вверх по иерархии до первого нахождения элемента
 // Метод closest(selector)
 // Принцип работы: Метод вызывается на элементе и ищет родительский элемент, начиная с самого элемента
-//       и двигаясь вверх по DOM-дереву, пока не найдёт элемент, соответствующий переданному селектору.
+// и двигаясь вверх по DOM-дереву, пока не найдёт элемент, соответствующий переданному селектору.
 // Аргумент: Принимает строку с CSS-селектором.
 // const elLiCompleted = elTitleCompleted.closest('li');
 console.log(elLiCompleted);
@@ -220,7 +230,8 @@ console.log('-'.repeat(40));
 
 console.log(`20 - очисти список`);
 // Очищаємо весь внутрішній список за допомогою innerHTML = ''
-elClassList.innerHTML = '';
+
+// elClassList.innerHTML = '';
 
 console.log('-'.repeat(40));
 
@@ -252,13 +263,14 @@ newNumberContainer.classList.add('number-container');
 // Додаємо новий контейнер в DOM після першого завдання (після параграфа с класом 'task-2')
 const elTask2 = document.querySelector('.task-2');
 elTask2.after(newNumberContainer);
+
 // newNumberContainer = document.querySelector('.number-container');
 
 let markupNewNumber = ``;
 
 for (let i = 1; i <= 100; i++) {
   const newNumber = randomNumber();
-  console.log(`newNumber`, newNumber);
+  // console.log(`newNumber`, newNumber);
   let classNumber = '';
   if (newNumber % 2 === 0) {
     classNumber = 'even';
@@ -273,6 +285,29 @@ for (let i = 1; i <= 100; i++) {
 newNumberContainer.insertAdjacentHTML('beforeend', markupNewNumber);
 
 console.log('-'.repeat(40));
+
+/* --------------------------------------------------------------------------------------------- */
+// Варіант 2
+
+let arrayBox = [];
+
+for (let i = 1; i <= 100; i++) {
+  const newNumber = randomNumber();
+  // console.log(`newNumber`, newNumber);
+
+  const box = document.createElement('div');
+  box.textContent = newNumber;
+
+  if (newNumber % 2 === 0) {
+    box.classList.add('even');
+  } else {
+    box.classList.add('odd');
+  }
+
+  arrayBox.push(box);
+}
+
+newNumberContainer.append(...arrayBox);
 /* --------------------------------------------------------------------------------------------- */
 
 /* ============================================================================================= */
@@ -311,12 +346,12 @@ console.log(`Завдання 3:`);
 
 // Посилання форми
 const refs3 = {
-    contactFormEl: document.querySelector('.js-contact-form'),
-    usernameInputEl: document.querySelector('.js-username-input'),
-    policyCheckbox: document.querySelector('.js-policy-checkbox'),
-    usernameOutputEl: document.querySelector('.js-username-output'),
-    submitBtnEl: document.querySelector('.js-contact-form-submit'),
-}
+  contactFormEl: document.querySelector('.js-contact-form'),
+  usernameInputEl: document.querySelector('.js-username-input'),
+  policyCheckbox: document.querySelector('.js-policy-checkbox'),
+  usernameOutputEl: document.querySelector('.js-username-output'),
+  submitBtnEl: document.querySelector('.js-contact-form-submit'),
+};
 
 // ------------------------------------------------------------
 // Слухач події input для перевірки довжини імені користувача та встановлення класу для кольору обводки
@@ -327,22 +362,21 @@ chkInputLength();
 
 // функція перевірки довжини імені користувача та встановлення класу для кольору обводки
 function chkInputLength(event) {
-    const userName = refs3.contactFormEl.elements.userName.value;
-    console.log(`userName`,userName);
-    const isSuccessLength = userName.length >= 6 ? true : false;
-    if (isSuccessLength) {
-        refs3.usernameInputEl.classList.add(`success`);
-        refs3.usernameInputEl.classList.remove(`error`);
-    } else {
-        refs3.usernameInputEl.classList.remove(`success`);
-        refs3.usernameInputEl.classList.add(`error`);
-    }
-    if (userName.length > 0) {
-        refs3.usernameOutputEl.textContent = userName;
-    } else {
-        refs3.usernameOutputEl.textContent = 'Anonymous';
-    }
-    
+  const userName = refs3.contactFormEl.elements.userName.value;
+  console.log(`userName`, userName);
+  const isSuccessLength = userName.length >= 6 ? true : false;
+  if (isSuccessLength) {
+    refs3.usernameInputEl.classList.remove(`error`);
+    refs3.usernameInputEl.classList.add(`success`);
+  } else {
+    refs3.usernameInputEl.classList.remove(`success`);
+    refs3.usernameInputEl.classList.add(`error`);
+  }
+  if (userName.length > 0) {
+    refs3.usernameOutputEl.textContent = userName;
+  } else {
+    refs3.usernameOutputEl.textContent = 'Anonymous';
+  }
 }
 // ------------------------------------------------------------
 
@@ -352,15 +386,15 @@ refs3.usernameInputEl.addEventListener('focus', chkInputFocus);
 
 // функція перевірки при focus пустоти поля імені користувача та встановлення кольору обводки
 function chkInputFocus(event) {
-    const userName = refs3.contactFormEl.elements.userName.value;
-    console.log(`userName`,userName);
-    const isSuccessLength = userName.length > 0 ? true : false;
-    console.log(`isSuccessLength`,isSuccessLength);
-    if (isSuccessLength) {
-        refs3.usernameInputEl.style.outline = '3px solid green';
-    } else {
-        refs3.usernameInputEl.style.outline = '3px solid red';
-    }
+  const userName = refs3.contactFormEl.elements.userName.value.trim();
+  console.log(`userName`, userName);
+  const isSuccessLength = userName.length > 0 ? true : false;
+  console.log(`isSuccessLength`, isSuccessLength);
+  if (isSuccessLength) {
+    refs3.usernameInputEl.style.outline = '3px solid green';
+  } else {
+    refs3.usernameInputEl.style.outline = '3px solid red';
+  }
 }
 // ------------------------------------------------------------
 
@@ -370,15 +404,15 @@ refs3.usernameInputEl.addEventListener('blur', chkInputBlur);
 
 // функція перевірки при blur пустоти поля імені користувача та встановлення кольору обводки
 function chkInputBlur(event) {
-    const userName = refs3.contactFormEl.elements.userName.value;
-    console.log(`userName`,userName);
-    const isSuccessLength = userName.length > 0 ? true : false;
-    console.log(`isSuccessLength`,isSuccessLength);
-    if (isSuccessLength) {
-        refs3.usernameInputEl.style.outline = '3px solid lime';
-    } else {
-        refs3.usernameInputEl.style.outline = '3px solid red';
-    }
+  const userName = refs3.contactFormEl.elements.userName.value.trim();
+  console.log(`userName`, userName);
+  const isSuccessLength = userName.length > 0 ? true : false;
+  console.log(`isSuccessLength`, isSuccessLength);
+  if (isSuccessLength) {
+    refs3.usernameInputEl.style.outline = '3px solid lime';
+  } else {
+    refs3.usernameInputEl.style.outline = '3px solid red';
+  }
 }
 // ------------------------------------------------------------
 
@@ -397,37 +431,41 @@ function chkInputBlur(event) {
 refs3.contactFormEl.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
-    // Відміняємо поведінку браузера за замовченням
-    event.preventDefault();
+  // Відміняємо поведінку браузера за замовченням
+  event.preventDefault();
 
-    // Посилання на форму в короткому вигляді
-    const form=refs3.contactFormEl;
-    
-    // Отримуємо значення ім'я користувача
-    const userName = refs3.usernameInputEl.value;
-    console.log(`userName`,userName);
-    // Перевіряємо значення checkbox
-    const policy = refs3.policyCheckbox.checked;
-    console.log(`policy`,policy);
+  // Посилання на форму в короткому вигляді
+  const form = refs3.contactFormEl;
 
-    // Перевірка повністю введених значень
-    if (userName.length === 0 || policy === false) {
-        alert(`Введіть ім'я та погодьтеся з політикою кофіденційності !` );
-        return;
-    }
+  // ******************************************************
+  // Деструктуризація елементів зі списку елементів форми
+  // const { userName, accept } = event.target.elements;
+  // ********************************************************
 
-    // Перезавантаження форми та обнулення input та checkbox
-    form.reset();
+  // Отримуємо значення ім'я користувача
+  const userName = refs3.usernameInputEl.value;
+  console.log(`userName`, userName);
+  // Перевіряємо значення checkbox
+  const policy = refs3.policyCheckbox.checked;
+  console.log(`policy`, policy);
 
-    // Встановлюємо дефолтне значення в checkbox
-    refs3.usernameOutputEl.textContent = 'Anonymous';
-    
-    // Повертаємо об'єкт
-    console.log(`Інформація користувача - `,{userName: userName});
-    return {userName: userName};
+  // Перевірка повністю введених значень
+  if (userName.length === 0 || policy === false) {
+    alert(`Введіть ім'я та погодьтеся з політикою кофіденційності !`);
+    return;
+  }
+
+  // Перезавантаження форми та обнулення input та checkbox
+  form.reset();
+
+  // Встановлюємо дефолтне значення в checkbox
+  refs3.usernameOutputEl.textContent = 'Anonymous';
+
+  // Повертаємо об'єкт
+  console.log(`Інформація користувача - `, { userName: userName });
+  return { userName: userName };
 }
 // ------------------------------------------------------------
-
 
 console.log('-'.repeat(40));
 /* --------------------------------------------------------------------------------------------- */
@@ -439,62 +477,90 @@ console.log('-'.repeat(40));
 // При кліку на кнопку "Зменшити" квадрат стає меньшим на 20 пікселів,
 // При кліку на кнопку "Збільшити" - квадрат стає більшим на 20 пікселів.
 /* --------------------------------------------------------------------------------------------- */
-console.log(`Завдання 4:`);
+console.log(`Завдання 4 Варіант 1:`);
 
 // Об'єкт з посиланнями
 const refs = {
-    // Посилання на квадрат
-    boxEl: document.querySelector('.box'),
-    // Посилання на кнопку "Зменшити" js-decrease
-    btnDecreaseEl: document.querySelector('.js-decrease'),
-    // Посилання на кнопку "Збільшити" js-increase
-    btnIncreaseEl: document.querySelector('.js-increase'),
-}
+  // Посилання на квадрат
+  boxEl: document.querySelector('.box'),
+  // Посилання на кнопку "Зменшити" js-decrease
+  btnDecreaseEl: document.querySelector('.js-decrease'),
+  // Посилання на кнопку "Збільшити" js-increase
+  btnIncreaseEl: document.querySelector('.js-increase'),
+};
 
-// Слухач подій на кнопку "Зменшити" 
+// Слухач подій на кнопку "Зменшити"
 // Передається додатковий параметр - кількість пікселів для зменшення(-) або збільшення (+)
-refs.btnDecreaseEl.addEventListener('click', (event) => {onbtnChange(event, -10)});
+refs.btnDecreaseEl.addEventListener('click', event => {
+  onbtnChange(event, -20);
+});
+
 // Слухач подій на кнопку "Збільшити"
-refs.btnIncreaseEl.addEventListener('click', (event) => {onbtnChange(event, 10)});
+refs.btnIncreaseEl.addEventListener('click', event => {
+  onbtnChange(event, 20);
+});
 
 function onbtnChange(event, num) {
+  // Поточне значення ширини та висоти блоку (строкове значення наприклад '50px')
+  const currentWidth = getComputedStyle(refs.boxEl).width;
+  const currentHeigth = getComputedStyle(refs.boxEl).height;
+  console.log(`currentWidth`, currentWidth); // '50px'
+  console.log(`currentHeigth`, currentHeigth); // '50px'
 
-    // Поточне значення ширини та висоти блоку (строкове значення наприклад '50px')
-    const currentWidth = getComputedStyle(refs.boxEl).width;
-    const currentHeigth = getComputedStyle(refs.boxEl).height;
-    console.log(`currentWidth`,currentWidth); // '50px'
-    console.log(`currentHeigth`,currentHeigth); // '50px'
+  // Переводимо поточне значення ширини та висоти в числове значення :
+  const currentWidthNum = parseInt(currentWidth);
+  const currentHeigthNum = parseInt(currentHeigth);
+  console.log(`currentWidthNum`, currentWidthNum); // 50
+  console.log(`currentHeigthNum`, currentHeigthNum); // 50
 
-    // Переводимо поточне значення ширини та висоти в числове значення :
-    const currentWidthNum = parseInt(currentWidth);
-    const currentHeigthNum = parseInt(currentHeigth);
-    console.log(`currentWidthNum`,currentWidthNum); // 50
-    console.log(`currentHeigthNum`,currentHeigthNum); // 50
+  // Змінюємо розміри блоку
+  const newWidthNum = currentWidthNum + num;
+  const newHeigthNum = currentHeigthNum + num;
 
-    // Зменшуємо розміри блоку
-    const newWidthNum = currentWidthNum + num;
-    const newHeigthNum = currentHeigthNum + num;
+  // Переводимо число в строку
+  const newWidth = String(newWidthNum) + 'px';
+  const newHeigth = String(newHeigthNum) + 'px';
 
-    // Переводимо число в строку
-    const newWidth = String(newWidthNum)+'px';
-    const newHeigth = String(newHeigthNum)+'px';
-
-    // Встановлення нових розмірів блоку (ширини та висоти)
-    refs.boxEl.style.width = newWidth;
-    refs.boxEl.style.height = newHeigth;
-
+  // Встановлення нових розмірів блоку (ширини та висоти)
+  refs.boxEl.style.width = newWidth;
+  refs.boxEl.style.height = newHeigth;
 }
-
 
 console.log('-'.repeat(40));
 /* --------------------------------------------------------------------------------------------- */
 
 /* ============================================================================================= */
-// Завдання :
+// Завдання 4 :
 /* ============================================================================================= */
-//
+// Варіант 2
 /* --------------------------------------------------------------------------------------------- */
-console.log(`Завдання :`);
+console.log(`Завдання 4 Варіант 2:`);
+
+// Посилання на елементи :
+// Посилання на квадрат
+const boxEl = document.querySelector('.box');
+// Посилання на кнопку "Зменшити" js-decrease
+const btnDecreaseEl = document.querySelector('.js-decrease-variant');
+// Посилання на кнопку "Збільшити" js-increase
+const btnIncreaseEl = document.querySelector('.js-increase-variant');
+
+btnDecreaseEl.addEventListener('click', function () {
+  // При кліку зменшуємо блок
+  let currentWidth = parseInt(getComputedStyle(boxEl).width);
+  let currentHeight = parseInt(getComputedStyle(boxEl).height);
+
+  boxEl.style.width = currentWidth - 20 + 'px';
+  boxEl.style.height = currentHeight - 20 + 'px';
+});
+
+btnIncreaseEl.addEventListener('click', function () {
+  // При кліку зменшуємо блок
+  let currentWidth = parseInt(getComputedStyle(boxEl).width);
+  let currentHeight = parseInt(getComputedStyle(boxEl).height);
+
+  boxEl.style.width = currentWidth + 20 + 'px';
+  boxEl.style.height = currentHeight + 20 + 'px';
+});
 
 console.log('-'.repeat(40));
 /* --------------------------------------------------------------------------------------------- */
